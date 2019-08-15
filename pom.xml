@@ -7,6 +7,7 @@
     <groupId>com.match</groupId>
     <artifactId>match-parent</artifactId>
     <version>1.0.0</version>
+    <packaging>pom</packaging>
 
     <properties>
         <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
@@ -23,6 +24,15 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
+    <repositories>
+        <repository>
+            <id>github-maven-rpeo</id>
+            <name>github-maven-rpeo</name>
+            <url>https://raw.githubusercontent.com/jaguar-zc/maven-rpeo/master</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
