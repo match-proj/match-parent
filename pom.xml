@@ -11,6 +11,8 @@
 
     <properties>
         <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
+        <docker.repostory>registry.cn-hangzhou.aliyuncs.com/match-hub</docker.repostory>
+        <docker.registry.name>microservcie-projects</docker.registry.name>
     </properties>
 
     <dependencyManagement>
@@ -40,6 +42,12 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <optional>true</optional>
+            <scope>test</scope>
+        </dependency>
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -55,10 +63,33 @@
     <build>
         <pluginManagement>
             <plugins>
+                <!--新增的docker maven插件-->
                 <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.4.12</version>
+                    <!--docker镜像相关的配置信息-->
+                    <configuration>
+                        <!--镜像名，这里用工程名-->
+                        <serverId>docker-aliyun</serverId>
+                        <registryUrl>${docker.repostory}</registryUrl>
+                        <imageName>${project.artifactId}</imageName>
+                        <pushImage>false</pushImage>
+                        <!--Dockerfile文件所在目录-->
+                        <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                        <!--TAG,这里用工程版本号-->
+                        <imageTags>
+                            <imageTag>${project.version}</imageTag>
+                        </imageTags>
+                        <!--构建镜像的配置信息-->
+                        <resources>
+                            <resource>
+                                <targetPath>/</targetPath>
+                                <directory>${project.build.directory}</directory>
+                                <include>${project.build.finalName}.jar</include>
+                            </resource>
+                        </resources>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
